@@ -1,0 +1,23 @@
+{
+    "name": "asus/src",
+    "description": "Proyecto a mejorar",
+    "license": "proprietary",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Asus\\Src\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "JosueUPT",
+            "email": "jaechambilla@upt.pe"
+        }
+    ],
+    "require": {
+        "php": "^8.0"
+    },
+    "minimum-stability": "stable",
+    "scripts": {},
+    "config": {}
+}
