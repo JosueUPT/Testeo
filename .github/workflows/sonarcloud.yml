@@ -34,8 +34,11 @@ jobs:
 
       - name: Fetch Vulnerabilities
         run: |
+          echo "## Vulnerabilities Detected"
+          echo "| Message | Severity | Component | Line | Status |"
+          echo "|---------|----------|-----------|------|--------|"
           curl -u "${{ secrets.SONAR_TOKEN }}: " "https://sonarcloud.io/api/issues/search?componentKeys=pyfanpage&types=VULNERABILITY" \
-          | jq '.issues[] | {message: .message, severity: .severity, component: .component, line: .line, status: .status}'
+          | jq -r '.issues[] | "| \(.message) | \(.severity) | \(.component) | \(.line) | \(.status) |"'
 
   semgrep:
     runs-on: ubuntu-latest
