@@ -1,4 +1,4 @@
-name: SonarCloud Scan & Semgrep Analysis
+name: SonarCloud Scan & Security Analysis
 on: [push, pull_request]
 
 jobs:
@@ -32,17 +32,16 @@ jobs:
           -Dsonar.sources=. \
           -Dsonar.host.url=https://sonarcloud.io
 
-  semgrep:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
+      - name: Install Semgrep
+        run: |
+          pip install semgrep
 
       - name: Run Semgrep Scan
         run: |
-          docker run --rm -v ${GITHUB_WORKSPACE}:/src --workdir /src \
-          semgrep/semgrep semgrep scan --config="p/default" --sarif --output=report.sarif --metrics=off
+          semgrep scan --config='p/default' --sarif --output=report.sarif
 
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: report.sarif
+          token: ${{ secrets.GITHUB_TOKEN }} # Token automático
