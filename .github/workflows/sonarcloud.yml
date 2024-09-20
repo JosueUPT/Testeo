@@ -32,15 +32,10 @@ jobs:
           -Dsonar.sources=. \
           -Dsonar.host.url=https://sonarcloud.io
 
-      - name: Fetch SonarCloud Report
+      - name: Fetch Vulnerabilities
         run: |
-          curl -u "${{ secrets.SONAR_TOKEN }}: " "https://sonarcloud.io/api/measures/component?component=pyfanpage&metricKeys=sqale_index,code_smells,vulnerabilities,bugs,coverage" \
-          | jq '.component.measures[] | {metric: .metric, value: .value}'
-
-      - name: Fetch Issues
-        run: |
-          curl -u "${{ secrets.SONAR_TOKEN }}: " "https://sonarcloud.io/api/issues/search?componentKeys=pyfanpage&severities=BLOCKER,CRITICAL,MAJOR" \
-          | jq '.issues[] | {message: .message, severity: .severity, component: .component, line: .line}'
+          curl -u "${{ secrets.SONAR_TOKEN }}: " "https://sonarcloud.io/api/issues/search?componentKeys=pyfanpage&types=VULNERABILITY" \
+          | jq '.issues[] | {message: .message, severity: .severity, component: .component, line: .line, status: .status}'
 
   semgrep:
     runs-on: ubuntu-latest
