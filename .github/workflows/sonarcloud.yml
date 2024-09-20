@@ -1,4 +1,4 @@
-name: SonarCloud Scan & Snyk Security Scan
+name: SonarCloud Scan & Semgrep Security Scan
 on: [push, pull_request]
 
 jobs:
@@ -35,14 +35,11 @@ jobs:
       - name: Install dependencies
         run: composer install --no-dev --prefer-dist
 
-      # Instalar Snyk
-      - name: Install Snyk
-        run: npm install -g snyk
-
-      # Analizar vulnerabilidades con Snyk
-      - name: Run Snyk to check for vulnerabilities
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      # Aquí añadimos el análisis de Semgrep
+      - name: Install Semgrep
         run: |
-          snyk monitor --file=composer.lock --package-manager=composer
-          snyk test --file=composer.lock --package-manager=composer
+          curl -sSfL https://semgrep.live/install.sh | bash
+
+      - name: Run Semgrep
+        run: |
+          semgrep --config auto .
