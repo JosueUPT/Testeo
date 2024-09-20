@@ -10,3 +10,5 @@ jobs:
         with:
           projectBaseDir: './'
           args: '-Dsonar.projectKey=pyfanpage -Dsonar.organization=pyfanpage'
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  # Aquí se pasa el token
