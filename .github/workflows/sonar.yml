@@ -1,0 +1,41 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Cambia esto si tu rama principal se llama de otra manera
+
+jobs:
+  sonarqube:
+    name: SonarCloud Analysis
+    runs-on: ubuntu-latest  # El entorno en el que se ejecutará el job
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2  # Clona el repositorio
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2  # Configura la versión de PHP
+        with:
+          php-version: '8.0'  # Cambia esto a la versión que necesites
+
+      - name: Install Composer dependencies
+        run: composer install  # Instala las dependencias de Composer
+
+      - name: Run PHPUnit Tests
+        run: vendor/bin/phpunit --coverage-clover coverage.xml  # Ejecuta las pruebas y genera el reporte de cobertura
+
+      - name: SonarCloud Scan
+        run: |
+          composer global require sonarsource/sonar-scanner-cli  # Instala el scanner de Sonar
+          export PATH="$PATH:$HOME/.composer/vendor/bin"  # Añade el scanner a la ruta
+          sonar-scanner \  # Ejecuta el análisis de Sonar
+            -Dsonar.projectKey=pyfanpage \  # Reemplaza con tu project key
+            -Dsonar.organization=pyfanpage \  # Reemplaza con tu organización en SonarCloud
+            -Dsonar.host.url=https://sonarcloud.io \  # URL de SonarCloud
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \  # Usa el token almacenado en los secretos
+            -Dsonar.cs.opencover.reportsPaths=coverage.xml  # Ruta al reporte de cobertura
+
+      - name: Build and Publish
+        run: |
+          echo "Build and Publish steps go here"  # Aquí puedes agregar los comandos para construir y publicar

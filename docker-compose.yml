@@ -1,11 +1,12 @@
-version: '3.8'
-
 services:
   web:
-    image: josuechambilla/proyecto_codigo-web
+    #image: josuechambilla/proyecto_codigo-web
+    build: .
     container_name: proyecto_codigo_web
     ports:
       - "8080:80"
+    volumes:
+      - ./src:/var/www/html
     depends_on:
       - db
 
