@@ -19,15 +19,15 @@ jobs:
           distribution: 'adopt'
 
       - name: Verify Java version
-        run: java -version  # Verifica que se esté usando Java 17
+        run: java -version
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v1
-        with:
-          projectBaseDir: './'
-          args: >
-            -Dsonar.projectKey=pyfanpage
-            -Dsonar.organization=pyfanpage
-            -Dsonar.php.coverage.reportPaths=coverage.xml
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Build and Run SonarCloud Scanner
+        run: |
+          docker run --rm -e SONAR_TOKEN=${{ secrets.SONAR_TOKEN }} \
+          -v ${GITHUB_WORKSPACE}:/usr/src \
+          sonarsource/sonar-scanner-cli \
+          -Dsonar.projectKey=pyfanpage \
+          -Dsonar.organization=pyfanpage \
+          -Dsonar.php.coverage.reportPaths=coverage.xml \
+          -Dsonar.sources=. \
+          -Dsonar.host.url=https://sonarcloud.io
