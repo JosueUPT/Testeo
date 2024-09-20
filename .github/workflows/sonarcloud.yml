@@ -21,7 +21,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   # Asegúrate de que este secreto esté configurado
         with:
           args: |
-            -Dsonar.projectKey=tu_project_key
-            -Dsonar.organization=tu_organization_key
+            -Dsonar.projectKey=pyfanpage
+            -Dsonar.organization=pyfanpage
             -Dsonar.sources=src  # Ajusta si tus fuentes están en otra carpeta
             -Dsonar.tests=test    # Ajusta si tus pruebas están en otra carpeta
