@@ -1,0 +1,27 @@
+name: SonarCloud analysis
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+permissions:
+  pull-requests: read
+
+jobs:
+  Analysis:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Analyze with SonarCloud
+        uses: SonarSource/sonarcloud-github-action@v2.2.0
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   # Asegúrate de que este secreto esté configurado
+        with:
+          args: |
+            -Dsonar.projectKey=tu_project_key
+            -Dsonar.organization=tu_organization_key
+            -Dsonar.sources=src  # Ajusta si tus fuentes están en otra carpeta
+            -Dsonar.tests=test    # Ajusta si tus pruebas están en otra carpeta
