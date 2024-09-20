@@ -1,5 +1,9 @@
-name: SonarCloud Scan
-on: [push, pull_request]
+name: SonarCloud Scan & Publish
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Desencadena en cada versión que empujas
 
 jobs:
   sonarcloud:
@@ -31,3 +35,22 @@ jobs:
           -Dsonar.php.coverage.reportPaths=coverage.xml \
           -Dsonar.sources=. \
           -Dsonar.host.url=https://sonarcloud.io
+
+      - name: Install dependencies
+        run: composer install --no-dev --prefer-dist
+
+      - name: Publish to Packagist
+        run: composer publish
+        env:
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag: ${{ github.ref }}
+          files: |
+            # Especifica aquí los archivos que deseas incluir en el release
+            ./build/*  # O cualquier archivo que quieras agregar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
