@@ -21,4 +21,4 @@ jobs:
             -Dsonar.organization=pyfanpage
             -Dsonar.php.coverage.reportPaths=coverage.xml
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
