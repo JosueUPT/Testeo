@@ -34,8 +34,13 @@ jobs:
 
       - name: Fetch SonarCloud Report
         run: |
-          curl -u "${{ secrets.SONAR_TOKEN }}: " "https://sonarcloud.io/api/measures/component?component=pyfanpage&metricKeys=sqale_index,code_smells,vulnerabilities,bugs" \
+          curl -u "${{ secrets.SONAR_TOKEN }}: " "https://sonarcloud.io/api/measures/component?component=pyfanpage&metricKeys=sqale_index,code_smells,vulnerabilities,bugs,coverage" \
           | jq '.component.measures[] | {metric: .metric, value: .value}'
+
+      - name: Fetch Issues
+        run: |
+          curl -u "${{ secrets.SONAR_TOKEN }}: " "https://sonarcloud.io/api/issues/search?componentKeys=pyfanpage&severities=BLOCKER,CRITICAL,MAJOR" \
+          | jq '.issues[] | {message: .message, severity: .severity, component: .component, line: .line}'
 
   semgrep:
     runs-on: ubuntu-latest
@@ -51,7 +56,3 @@ jobs:
           semgrep scan --config='p/default' --sarif --output=report.sarif
           echo "Scan Summary:"
           semgrep scan --config='p/default' --json | jq '.results[] | {language: .language, path: .path, message: .extra.message}'
-
-      - name: Additional Semgrep Rules
-        run: |
-          semgrep scan --config='path/to/your/custom/rules.yml' --sarif --output=additional_report.sarif
