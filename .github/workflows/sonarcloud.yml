@@ -34,7 +34,7 @@ jobs:
 
       - name: Wait for SonarCloud analysis to finish
         run: |
-          sleep 30  # Asegúrate de que el análisis haya terminado
+          sleep 30  # Esperar a que el análisis se complete
           
       - name: Fetch Vulnerabilities
         run: |
