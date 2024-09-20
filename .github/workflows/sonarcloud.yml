@@ -12,6 +12,11 @@ jobs:
         with:
           php-version: '8.2'
 
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'  # Asegúrate de usar Java 17 o superior
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v1
         with:
