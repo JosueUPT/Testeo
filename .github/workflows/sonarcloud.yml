@@ -15,7 +15,8 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          java-version: '17'  # Asegúrate de usar Java 17 o superior
+          java-version: '17'  # Puedes cambiar esto a '11' o '8' si lo prefieres
+          distribution: 'adopt'  # Asegúrate de incluir esta línea
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v1
