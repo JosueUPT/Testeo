@@ -1,4 +1,4 @@
-name: SonarCloud Scan
+name: SonarCloud Scan & Snyk Security Scan
 on: [push, pull_request]
 
 jobs:
@@ -32,8 +32,18 @@ jobs:
           -Dsonar.sources=. \
           -Dsonar.host.url=https://sonarcloud.io
 
-
-
       - name: Install dependencies
         run: composer install --no-dev --prefer-dist
 
+      # Aquí añadimos el análisis de Snyk
+      - name: Install Snyk
+        run: |
+          npm install -g snyk
+
+      - name: Run Snyk to check for vulnerabilities
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: |
+          snyk auth ${{ secrets.SNYK_TOKEN }}
+          snyk monitor --file=composer.lock --package-manager=composer
+          snyk test --file=composer.lock --package-manager=composer
