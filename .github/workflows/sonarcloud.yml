@@ -10,13 +10,13 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.1'  # Cambiado a PHP 8.1
 
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          java-version: '17'  # Puedes cambiar esto a '11' o '8' si lo prefieres
-          distribution: 'adopt'  # Asegúrate de incluir esta línea
+          java-version: '16'  # Cambiado a Java 16
+          distribution: 'adopt'
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v1
