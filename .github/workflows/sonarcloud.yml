@@ -32,6 +32,11 @@ jobs:
           -Dsonar.sources=. \
           -Dsonar.host.url=https://sonarcloud.io
 
+      - name: Fetch SonarCloud Report
+        run: |
+          curl -u "${{ secrets.SONAR_TOKEN }}: " "https://sonarcloud.io/api/measures/component?component=pyfanpage&metricKeys=sqale_index,code_smells,vulnerabilities,bugs" \
+          | jq '.component.measures[] | {metric: .metric, value: .value}'
+
   semgrep:
     runs-on: ubuntu-latest
     steps:
