@@ -44,5 +44,5 @@ jobs:
       - name: Semgrep Analysis
         run: |
           semgrep scan --config='p/default' --sarif --output=report.sarif
-          echo "Scan completed with the following findings:"
-          cat report.sarif
+          echo "Scan Summary:"
+          semgrep scan --config='p/default' --json | jq '.results[] | {language: .language, path: .path, message: .extra.message}'
