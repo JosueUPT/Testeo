@@ -51,3 +51,7 @@ jobs:
           semgrep scan --config='p/default' --sarif --output=report.sarif
           echo "Scan Summary:"
           semgrep scan --config='p/default' --json | jq '.results[] | {language: .language, path: .path, message: .extra.message}'
+
+      - name: Additional Semgrep Rules
+        run: |
+          semgrep scan --config='path/to/your/custom/rules.yml' --sarif --output=additional_report.sarif
