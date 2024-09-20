@@ -3,6 +3,7 @@ on:
   push:
   pull_request:
   workflow_dispatch:  # Permite ejecutar manualmente
+
 jobs:
   sonarcloud:
     runs-on: ubuntu-latest
@@ -12,13 +13,16 @@ jobs:
         with:
           php-version: '8.0'
           coverage: 'none'
+      
       - uses: actions/checkout@v2
+      
       - name: Composer Install
         run: composer install --no-progress --prefer-dist
+      
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v1
         with:
           projectBaseDir: './'
           args: '-Dsonar.projectKey=tu_clave_de_proyecto -Dsonar.organization=tu_organizacion'
-          env:
-            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
